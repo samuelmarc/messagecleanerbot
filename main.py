@@ -8,6 +8,7 @@ from pyrogram import Client, filters, idle
 from pyrogram.enums import ChatType, ChatMemberStatus
 from pyrogram.errors import ChatAdminRequired, UserNotParticipant
 from pyrogram.raw.functions.messages import DeleteHistory
+from pyrogram.raw.functions.account import UpdateStatus
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, ChatPrivileges
 
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -186,10 +187,20 @@ async def main():
     logging.warning('⚡️ Bot Started!')
     await client2.start()
     client2.me = await client2.get_me()
+    await client2.invoke(
+    	UpdateStatus(
+    		offline=False
+    	)
+    )
     logging.warning('🔧 User Helper Started!')
     await idle()
     await client.stop()
     logging.warning('🔌 Bot Stopped.')
+    await client2.invoke(
+    	UpdateStatus(
+    		offline=True
+    	)
+    )
     await client2.stop()
     logging.warning('🔌 User Helper Stopped.')
 
